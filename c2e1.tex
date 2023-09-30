@@ -1,0 +1,106 @@
+% arara: latexmk: { engine: pdflatex, options: ['-shell-escape'] }
+% arara: latexmk: { engine: pdflatex, clean: partial }
+
+\documentclass[nobib, letterpaper]{tufte-handout}
+
+\usepackage{xcolor}
+\definecolor{LightGray}{gray}{0.8}
+\usepackage{minted}
+\definecolor{bg}{rgb}{0.8,0.8,0.8}
+\usepackage{ccfonts}
+\usepackage{euler}
+\renewcommand*\ttdefault{cmtt}
+\usepackage{microtype}
+
+\usepackage[T1]{fontenc}
+
+\usepackage{units}
+
+\date{} % clear date
+
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes.multipart,chains,arrows.meta}
+
+\title{Purely Functional Data Structures}
+\author{Chapter 2}
+
+\begin{document}
+
+\maketitle
+
+\section{Exercise 1}
+
+We define our function as a right fold that combines the accumulator, the accumulator's previous element, and the present element of the fold.
+
+\inputminted[bgcolor=LightGray,firstline=11, lastline=14]{haskell}{src/Lib.hs}
+
+Consider \mintinline[bgcolor=LightGray]{haskell}{suffixes input}.
+To generate its output, we merely traverse the list once attaching an additional pointer to each node. Thus the procedure can be performed in $O(n)$ time and requires only an extra $n=O(n)$ space.
+
+\begin{figure*}
+  \begin{tikzpicture}[
+    list/.style={
+        rectangle split,
+        rectangle split parts=2,
+        draw,
+        rectangle split horizontal
+      },
+      >=stealth,
+      start chain=xs,
+      node distance=1em
+    ]
+
+    \node (E) {input};
+    \node[right=of E, list,on chain=xs] (A) {$1$};
+    \node[list,on chain=xs] (B) {$2$};
+    \node[list,on chain=xs] (C) {$3$};
+    \node[list,on chain=xs] (D) {$4$ \nodepart{two} $\bullet$};
+
+    \draw[->] let \p1 = (E.east), \p2 = (E.center) in (\x1,\y2) -- (A);
+    \draw[->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
+    \draw[->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
+    \draw[->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
+
+  \end{tikzpicture}
+  \vspace{1em}
+
+  \begin{tikzpicture}[
+    list/.style={
+        rectangle split,
+        rectangle split parts=2,
+        draw,
+        rectangle split horizontal
+      },
+      >=stealth,
+      start chain=xs,
+      node distance=1em
+    ]
+
+    \node (E) {output};
+    \node[right=of E, on chain=xs] (p1) {p1};
+    \node[right=of E, list,on chain=xs] (A) {$1$};
+    \node[list,on chain=xs] (B) {$2$};
+    \node[list,on chain=xs] (C) {$3$};
+    \node[list,on chain=xs] (D) {$4$ \nodepart{two} $\bullet$};
+
+    \node[above=of B] (p2) {p2};
+    \node[above=of C] (p3) {p3};
+    \node[above=of D] (p4) {p4};
+
+    \draw[double distance=0.05em, ->]
+      let \p1 = (E.east), \p2 = (E.center) in (\x1,\y2) -- (p1);
+    \draw[->] let \p1 = (A.two), \p2 = (A.center) in (\x1,\y2) -- (B);
+    \draw[->] let \p1 = (B.two), \p2 = (B.center) in (\x1,\y2) -- (C);
+    \draw[->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
+
+    \draw[->] let \p1 = (p1.east), \p2 = (A) in (\x1,\y2) -- (A);
+    \draw[->] let \p1 = (p2), \p2 = (p4.south) in (\x1,\y2) -- (B);
+    \draw[->] let \p1 = (p3), \p2 = (p4.south) in (\x1,\y2) -- (C);
+    \draw[->] let \p1 = (p4), \p2 = (p4.south) in (\x1,\y2) -- (D);
+
+  \end{tikzpicture}
+\end{figure*}
+
+\section{Exercise 2}
+
+\end{document}

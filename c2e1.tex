@@ -71,7 +71,7 @@ Consider \mintinline[bgcolor=LightGray]{haskell}{suffixes input}. To generate it
     \draw[->] let \p1 = (C.two), \p2 = (C.center) in (\x1,\y2) -- (D);
 
   \end{tikzpicture}
-  \vspace{1em}
+  \vspace{\baselineskip}
 
   \begin{tikzpicture}[
     list/.style={
@@ -114,7 +114,7 @@ Consider \mintinline[bgcolor=LightGray]{haskell}{suffixes input}. To generate it
 
 We keep track of the last element for which $<$ returned false in a \mintinline[bgcolor=LightGray]{haskell}{Maybe a}.
 \inputminted
-  [bgcolor=LightGray,firstline=27, lastline=33]
+  [bgcolor=LightGray,firstline=27, lastline=32]
   {haskell}
   {src/UnbalancedSet.hs}
 Then we must modify the typeclass method to use it.
@@ -122,5 +122,13 @@ Then we must modify the typeclass method to use it.
   [bgcolor=LightGray,firstline=12, lastline=17]
   {haskell}
   {src/UnbalancedSet.hs}
+
+Here and unless stated otherwise, we refer to the Haskell source in Appendix A of the text.
+
+\section{Exercise 3}
+
+I'm not sure Haskell has the same notion of handlers or exceptions. In Haskell we don't worry about the copying due to garbage collection.
+
+\section{Exercise 4}
 
 \end{document}

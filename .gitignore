@@ -53,3 +53,4 @@ src/style.css
 etc/scripts/stack-scripts.cabal
 better-cache/
 *.pdf
+_minted*

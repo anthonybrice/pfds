@@ -4,9 +4,8 @@
 \documentclass[nobib, letterpaper]{tufte-handout}
 
 \usepackage{xcolor}
-\definecolor{LightGray}{gray}{0.8}
+\definecolor{LightGray}{gray}{0.9}
 \usepackage{minted}
-\definecolor{bg}{rgb}{0.8,0.8,0.8}
 \usepackage{ccfonts}
 \usepackage{euler}
 \renewcommand*\ttdefault{cmtt}
@@ -24,18 +23,28 @@
 \title{Purely Functional Data Structures}
 \author{Chapter 2}
 
+
+\geometry{
+  left=.75in, % left margin
+  textwidth=35pc, % main text block
+  marginparsep=2pc, % gutter between main text block and margin notes
+  marginparwidth=12pc % width of margin notes
+}
+
 \begin{document}
 
 \maketitle
 
 \section{Exercise 1}
 
-We define our function as a right fold that combines the accumulator, the accumulator's previous element, and the present element of the fold.
+We define our function as a right fold that combines the accumulator, the accumulator's head element, and the present element of the fold.
 
-\inputminted[bgcolor=LightGray,firstline=11, lastline=14]{haskell}{src/Lib.hs}
+\inputminted
+  [bgcolor=LightGray,firstline=11, lastline=14]
+  {haskell}
+  {src/Lib.hs}
 
-Consider \mintinline[bgcolor=LightGray]{haskell}{suffixes input}.
-To generate its output, we merely traverse the list once attaching an additional pointer to each node. Thus the procedure can be performed in $O(n)$ time and requires only an extra $n=O(n)$ space.
+Consider \mintinline[bgcolor=LightGray]{haskell}{suffixes input}. To generate its output, we merely traverse the list once attaching an additional pointer to each node. Thus the procedure can be performed in $O(n)$ time and requires only an extra $n=O(n)$ space.
 
 \begin{figure*}
   \begin{tikzpicture}[
@@ -102,5 +111,16 @@ To generate its output, we merely traverse the list once attaching an additional
 \end{figure*}
 
 \section{Exercise 2}
+
+We keep track of the last element for which $<$ returned false in a \mintinline[bgcolor=LightGray]{haskell}{Maybe a}.
+\inputminted
+  [bgcolor=LightGray,firstline=27, lastline=33]
+  {haskell}
+  {src/UnbalancedSet.hs}
+Then we must modify the typeclass method to use it.
+\inputminted
+  [bgcolor=LightGray,firstline=12, lastline=17]
+  {haskell}
+  {src/UnbalancedSet.hs}
 
 \end{document}

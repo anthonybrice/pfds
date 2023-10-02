@@ -27,7 +27,7 @@ library
   exposed-modules:
       Lib
       Set
-      UnblancedSet
+      UnbalancedSet
   other-modules:
       Paths_pfds
   hs-source-dirs:

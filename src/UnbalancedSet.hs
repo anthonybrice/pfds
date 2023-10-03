@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, InstanceSigs #-}
 
-module UnbalancedSet (UnbalancedSet, complete) where
+module UnbalancedSet (UnbalancedSet) where
 
 import Set
 
@@ -13,16 +13,14 @@ instance Ord a => Set UnbalancedSet a where
   member _ E = False
   member x (T a y b)
     | x < y = member' x Nothing a
-    | x > y = member' x (Just y) b
-    | otherwise = True
+    | otherwise = member' x (Just y) b
 
 
   insert :: a -> UnbalancedSet a -> UnbalancedSet a
   insert x E = T E x E
   insert x s@(T a y b)
     | x < y = T (insert' x E a) y b
-    | x > y = T a y (insert' x s b)
-    | otherwise = s
+    | otherwise = T a y (insert' x s b)
 
 member' :: (Ord a) => a -> Maybe a -> UnbalancedSet a -> Bool
 member' _ Nothing E = False
@@ -46,3 +44,13 @@ complete x 1 = T E x E
 complete x n =
   let sub = complete x (n-1)
   in T sub x sub
+
+create2 :: a -> Int -> (UnbalancedSet a, UnbalancedSet a)
+create2 a m = (complete a m, complete a (m+1))
+
+balanced :: a -> Int -> UnbalancedSet a
+balanced _ n | n <= 0 = E
+balanced x 1 = T E x E
+balanced x n =
+    let (l, r) = create2 x (n-1)
+    in T l x r
